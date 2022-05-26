@@ -1,25 +1,22 @@
 ### TODO: RECURRENCE, Logging, Attachments, Wiki, location
 # Dependency Module
 Import-Module teamsCalendarEventMigrationFunctions
-# New Tenant Application Variables
-$applicationID = #
-$tenantId = #
-$accessSecret = #
+# Import configuration File
+$configPath = join-path -path $PSScriptRoot -childpath config.json
+$config = get-content -path $configPath | convertfrom-json
 # CutOver Date
-[datetime]$cutOver = # ENTER CUTOVER DATE HERE #
+[datetime]$cutOver = $config.cutOverDate
 [string]$cutOver = $cutOver.ToString("yyyy-MM-dd")
 # Filter for events on type,startdate, and isOrganizer
 $filterIndividualEvents = "type eq 'singleInstance' and start/dateTime ge '$($cutOver)' and isorganizer eq true"
 $filterSeriesEvents = "type eq 'seriesMaster' and isorganizer eq true"
-# Option Subject Append
-$subjectAppend = ""
 # Log Path
-$logPath = "$env:USERPROFILE\Downloads\userCalendarEvents.log"
+$logPath = join-path -path $PSScriptRoot -childpath "userCalendarEvents.log"
+write-information "Conversion ogs can be found in $logpath" -InformationAction Continue
 # Get API Key
-Get-APIKey -ApplicationID $applicationID -TenantId $tenantId -AccessSecret $accessSecret
+Get-APIKey -ApplicationID $config.applicationID -TenantId $config.tenantId -AccessSecret $config.accessSecret -ErrorAction Stop
 # Get New Tenant Users
 $usersNewTenant = Get-User -All
-
 # The property 'isOnlineMeeting' does not support filtering. This will be handled in a foreach below
 foreach ($userNewTenant in $usersNewTenant) {
     # Get Individual Events for each user using filter
@@ -28,7 +25,7 @@ foreach ($userNewTenant in $usersNewTenant) {
         # Filter for Online meeting
         if ($individualEvent.isOnlineMeeting -eq $true) {
             # Create New Event
-            if ($subjectAppend) {
+            if ($config.subjectAppend) {
                 try {
                     $converted = Convert-UserEvent -Event $individualEvent -CutOver $cutOver -SubjectAppend $subjectAppend
                     Write-ConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $converted -LogPath $logPath
