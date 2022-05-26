@@ -1,6 +1,6 @@
 ### TODO: RECURRENCE, Logging, Attachments, Wiki, location
 # Dependency Module
-Install-Module teamsCalendarEventMigrationFunctions
+Import-Module teamsCalendarEventMigrationFunctions
 # New Tenant Application Variables
 $applicationID = #
 $tenantId = #
