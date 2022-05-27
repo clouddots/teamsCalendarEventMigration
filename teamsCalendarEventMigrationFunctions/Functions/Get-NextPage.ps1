@@ -14,10 +14,10 @@ function Get-NextPage {
         $account_params.headers.add("ConsistencyLevel", "eventual")
     }
     $Result = Invoke-RestMethod @Account_params
-    if ($results."@odata.nextlink") {
-        Get-NextPage -Uri $results."@odata.nextlink"
+    if ($result."@odata.nextlink") {
+        Get-NextPage -Uri $result."@odata.nextlink"
     }
-    elseif (!$results."@odata.nextlink") {
+    elseif (!$result."@odata.nextlink") {
         $Result.Value
     }
 }
