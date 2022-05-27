@@ -1,4 +1,4 @@
-function Convert-UserEvent {
+function Convert-OGUserEvent {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)][PSObject]$UserEvent,
@@ -17,7 +17,7 @@ function Convert-UserEvent {
         $body.subject = $Subject
     }
     if ($UserEvent.body.content) {
-        $updateContent = Remove-TeamsEventInfo -html $UserEvent.body.content
+        $updateContent = Remove-OGTeamsEventInfo -html $UserEvent.body.content
         $bodyContent = [PSCustomObject]@{
             contentType = "HTML"
             content     = $updateContent
@@ -73,5 +73,5 @@ function Convert-UserEvent {
         Method      = 'POST'
         ContentType = 'application/json'
     }
-    Invoke-RestMethod @Account_params
+    Invoke-OGRestMethod @Account_params
 }

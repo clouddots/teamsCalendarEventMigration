@@ -1,4 +1,4 @@
-$GraphAPIKey = "v1.0"
+$GraphVersion = "v1.0"
 
 $NoExport = ''
 $ModuleFunctions = @(Get-ChildItem -Path $PSScriptRoot\Functions\*.ps1 -ErrorAction SilentlyContinue)

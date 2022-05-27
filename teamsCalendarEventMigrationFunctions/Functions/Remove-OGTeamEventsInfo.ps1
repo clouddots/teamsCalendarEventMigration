@@ -1,4 +1,4 @@
-function Remove-TeamsEventInfo {
+function Remove-OGTeamsEventInfo {
     param (
         [Parameter(Mandatory = $True)]$html
     )

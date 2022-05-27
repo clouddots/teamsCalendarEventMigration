@@ -1,4 +1,4 @@
-function Update-APIKey {
+function Update-OGAPIKey {
     [CmdletBinding()]
     param ()
     $split = $GraphAPIKey.Split('.')
@@ -15,6 +15,6 @@ function Update-APIKey {
     $expirationConverted = [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds($expiration))
     $tokenRefreshTime = $expirationConverted - $time
     if ($tokenRefreshTime.Minutes -lt 30) {
-        Get-APIKey -ApplicationID $applicationID -TenantId $tenantId -AccessSecret $accessSecret
+        Get-OGAPIKey -ApplicationID $applicationID -TenantId $tenantId -AccessSecret $accessSecret
     }
 }

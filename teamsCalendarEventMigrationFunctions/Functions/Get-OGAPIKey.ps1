@@ -1,4 +1,4 @@
-function Get-APIKey {
+function Get-OGAPIKey {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]$ApplicationID,
@@ -12,5 +12,5 @@ function Get-APIKey {
         Client_Secret = $AccessSecret
     }
     $ConnectGraph = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$TenantId/oauth2/v2.0/token" -Method POST -Body $Body
-    $Script:GraphAPIKey = $ConnectGraph.access_token
+    $Global:GraphAPIKey = $ConnectGraph.access_token
 }

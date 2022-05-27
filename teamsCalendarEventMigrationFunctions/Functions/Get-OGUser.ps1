@@ -1,4 +1,4 @@
-function Get-User {
+function Get-OGUser {
     [CmdletBinding(DefaultParameterSetName = 'UPN')]
     param (
         [Parameter(Mandatory = $False,
@@ -19,10 +19,10 @@ function Get-User {
     }
     if ($SearchDisplayName) {
         $URI = "https://graph.microsoft.com/$GraphVersion/users?`$search=`"displayName:$SearchDisplayName`""
-        Get-NextPage -uri $URI -SearchDisplayName
+        Get-OGNextPage -uri $URI -SearchDisplayName
     }
     if ($All) {
         $URI = "https://graph.microsoft.com/$GraphVersion/users"
-        Get-NextPage -Uri $URI
+        Get-OGNextPage -Uri $URI
     }
 }

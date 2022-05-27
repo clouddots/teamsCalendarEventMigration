@@ -14,38 +14,38 @@ $filterSeriesEvents = "type eq 'seriesMaster' and isorganizer eq true"
 $logPath = join-path -path $PSScriptRoot -childpath "userCalendarEvents.log"
 write-information "Conversion ogs can be found in $logpath" -InformationAction Continue
 # Get API Key
-Get-APIKey -ApplicationID $config.applicationID -TenantId $config.tenantId -AccessSecret $config.accessSecret -ErrorAction Stop
+Get-OGAPIKey -ApplicationID $config.applicationID -TenantId $config.tenantId -AccessSecret $config.accessSecret -ErrorAction Stop
 # Get New Tenant Users
-$usersNewTenant = Get-User -All
+$usersNewTenant = Get-OGUser -All
 # The property 'isOnlineMeeting' does not support filtering. This will be handled in a foreach below
 foreach ($userNewTenant in $usersNewTenant) {
     # Get Individual Events for each user using filter
-    $individualEvents = Get-UserEvents -UserPrincipalName $userNewTenant.userPrincipalName -Filter $filterIndividualEvents
+    $individualEvents = Get-OGUserEvents -UserPrincipalName $userNewTenant.userPrincipalName -Filter $filterIndividualEvents
     foreach ($individualEvent in $individualEvents) {
         # Filter for Online meeting
         if ($individualEvent.isOnlineMeeting -eq $true) {
             # Create New Event
             if ($config.subjectAppend) {
                 try {
-                    $converted = Convert-UserEvent -Event $individualEvent -CutOver $cutOver -SubjectAppend $subjectAppend
-                    Write-ConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $converted -LogPath $logPath
+                    $converted = Convert-OGUserEvent -Event $individualEvent -CutOver $cutOver -SubjectAppend $subjectAppend
+                    Write-OGConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $converted -LogPath $logPath
                 }
                 catch {
-                    Write-ConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $_ -LogPath $logPath
+                    Write-OGConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $_ -LogPath $logPath
                 }
             }
             else {
                 try {
-                    $converted = Convert-UserEvent -Event $individualEvent -CutOver $cutOver
-                    Write-ConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $converted -LogPath $logPath
+                    $converted = Convert-OGUserEvent -Event $individualEvent -CutOver $cutOver
+                    Write-OGConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $converted -LogPath $logPath
                 }
                 catch {
-                    Write-ConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $_ -LogPath $logPath
+                    Write-OGConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $individualEvent.id -Message $_ -LogPath $logPath
                 }
             }
         }
     }
-    $seriesEvents = Get-UserEvents -UserPrincipalName $userNewTenant.userPrincipalName -Filter $filterSeriesEvents
+    $seriesEvents = Get-OGUserEvents -UserPrincipalName $userNewTenant.userPrincipalName -Filter $filterSeriesEvents
     foreach ($seriesEvent in $seriesEvents) {
         # Filter for Online meeting
         if ($seriesEvent.isOnlineMeeting -eq $true) {
@@ -53,24 +53,24 @@ foreach ($userNewTenant in $usersNewTenant) {
                 # Create New Event
                 if ($subjectAppend) {
                     try {
-                        $converted = Convert-UserEvent -Event $seriesEvent -CutOver $cutOver -SubjectAppend $subjectAppend
-                        Write-ConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $converted -LogPath $logPath
+                        $converted = Convert-OGUserEvent -Event $seriesEvent -CutOver $cutOver -SubjectAppend $subjectAppend
+                        Write-OGConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $converted -LogPath $logPath
                     }
                     catch {
-                        Write-ConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $_ -LogPath $logPath
+                        Write-OGConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $_ -LogPath $logPath
                     }
                 }
                 else {
                     try {
                         $converted = Convert-UserEvent -Event $seriesEvent -CutOver $cutOver
-                        Write-ConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $converted -LogPath $logPath
+                        Write-OGConvertEventLog -LogType "INFO" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $converted -LogPath $logPath
                     }
                     catch {
-                        Write-ConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $_ -LogPath $logPath
+                        Write-OGConvertEventLog -LogType "ERROR" -User $userNewTenant.userPrincipalName -EventId $seriesEvent.id -Message $_ -LogPath $logPath
                     }
                 }
             }
         }
     }
-    Update-APIKey
+    Update-OGAPIKey
 }

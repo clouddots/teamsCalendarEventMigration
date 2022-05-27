@@ -1,4 +1,4 @@
-function Get-NextPage {
+function Get-OGNextPage {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True)][string]$URI,

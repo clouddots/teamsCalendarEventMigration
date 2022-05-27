@@ -1,4 +1,4 @@
-Function Write-ConvertEventLog {
+Function Write-OGConvertEventLog {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $False)]
