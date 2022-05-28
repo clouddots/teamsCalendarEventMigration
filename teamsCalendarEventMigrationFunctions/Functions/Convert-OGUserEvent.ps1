@@ -73,5 +73,5 @@ function Convert-OGUserEvent {
         Method      = 'POST'
         ContentType = 'application/json'
     }
-    Invoke-OGRestMethod @Account_params
+    Invoke-RestMethod @Account_params
 }
