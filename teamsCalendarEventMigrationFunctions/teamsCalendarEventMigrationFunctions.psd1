@@ -21,13 +21,13 @@
     GUID              = '46ff78ee-873e-4737-9935-d0140db58974'
 
     # Author of this module
-    Author            = 'Benpu'
+    Author            = 'Ben Pulidoulido'
 
     # Company or vendor of this module
-    CompanyName       = 'Unknown'
+    CompanyName       = 'Cloud Dotsots'
 
     # Copyright statement for this module
-    Copyright         = '(c) Benpu. All rights reserved.'
+    Copyright         = '(c) Cloud Dots Dots. All rights reserved.'
 
     # Description of the functionality provided by this module
     # Description = ''
